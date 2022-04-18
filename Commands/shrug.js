@@ -5,7 +5,7 @@ module.exports = new Command(
     [],
     2,
     "Shrugs.",
-    (message, args) => {
+    async (message, args) => {
         message.reply("¯\\_(ツ)_/¯");
     }
 );

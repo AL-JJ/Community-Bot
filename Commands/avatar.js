@@ -5,17 +5,18 @@ module.exports = new Command(
     ["a", "av"],
     2,
     "Displays the tagged user's avatar.",
-    (message, args) => {
+    async (message, args) => {
         if (args.length > 1) return message.reply("You can't mention that many people.");
 
         const embed = {
-            color: '0x36393F',
+            color: 0x2F3136,
             description: "Isn't it just beautiful?",
         };
 
         if (args.length === 1) {
 
             const mentionedUser = message.mentions.users.first();
+            if (!mentionedUser) return;
 
             embed.title = `${mentionedUser.username}'s Profile Picture`;
             embed.image = {

@@ -6,10 +6,10 @@ module.exports = new Command(
     ["h"],
     2,
     "Shows a list of commands.",
-    (message, args) => {
+    async (message, args) => {
 
         const embed = {
-            color: '0x36393F',
+            color: 0x2F3136,
             title: "Help!",
             fields: [],
             footer: { text: `Tip: use ${process.env.PREFIX}help <command name> for more information.`},

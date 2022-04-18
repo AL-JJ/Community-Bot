@@ -6,34 +6,41 @@ module.exports = new Command(
     "nhentai",
     ["nh"],
     5,
-    "Searches nHentai for a random book.",
+    "Searches nHentai for a random book. Can only be used in designated NSFW channels (Terms of Service).",
     async (message, args) => {
+        if (!message.channel.nsfw) {
+            message.reply("This channel isn't NSFW.");
+            return;
+        }
+
         const embed = {
-            footer: { text: "This was made possible by @Zekfad on Github" },
+            color: 0x2F3136,
+            footer: { text: "This was made possible by the nhentai-api npm package, created by @Zekfad on Github." },
             fields: [],
         };
 
         let bookObject = {};
-        let bookID;
-        let pages;
-        let cover;
 
         await nHentai.getRandomBook().then(book => {
-            bookID = book.id;
-            pages = book.pages.length;
-            cover = nHentai.getImageURL(book.cover);
+            let title = book.title;
+            let bookID = book.id;
+            let pages = book.pages.length;
+            let cover = nHentai.getImageURL(book.cover);
+            let uploadDate = book.uploaded;
 
             bookObject = {
+                title,
                 bookID,
                 pages,
                 cover,
+                uploadDate,
             };
         });
 
         embed.title = "Randomly Generated Book";
         embed.fields = {
-            name: "Randomized Result:",
-            value: `https://nhentai.net/g/${bookObject.bookID} (Pages: ${bookObject.pages})`,
+            name: `Result: ${bookObject.title.english}`,
+            value: `https://nhentai.net/g/${bookObject.bookID} (${bookObject.pages} Pages)\nUploaded: **${bookObject.uploadDate.getDate()}-${bookObject.uploadDate.getMonth()}-${bookObject.uploadDate.getFullYear()}**`,
         };
         embed.image = { url: bookObject.cover };
 

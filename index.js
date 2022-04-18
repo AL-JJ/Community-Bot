@@ -1,16 +1,16 @@
 require("dotenv").config();
 
-const { Client, Intents } = require("discord.js");
-const client = new Client({ intents: [ Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS ] });
+// MongoDB
+const mongoose = require('./Database/mongoose');
 
+// Discord API
+const { Client, Intents } = require("discord.js");
+const client = new Client({ intents: [ Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS ] });
 const { EventValidator, GetEvents } = require('./handlers');
 
-client.once("ready", () => {
-    console.log(`Login as '${client.user.tag}' successful.`);
-    client.user.setPresence({
-        status: "online"
-    });
-    client.user.setActivity(`${process.env.PREFIX}help`, { type: 'WATCHING' });
+client.once("ready", client => {
+    const { event, valid } = EventValidator("ready", GetEvents());
+    if (valid) event.Callback(client);
 });
 
 client.on("messageCreate", message => {
@@ -18,9 +18,10 @@ client.on("messageCreate", message => {
     if (valid) event.Callback(message);
 });
 
-client.on("guildCreate", async guild => {
-    let { event, valid } = EventValidator("guildCreate", GetEvents());
-    if (valid) event.Callback(guild);
+client.on("guildMemberAdd", member => {
+    const { event, valid } = EventValidator("guildMemberAdd", GetEvents());
+    if (valid) event.Callback(member);
 })
 
+mongoose.init();
 client.login(process.env.TOKEN);
