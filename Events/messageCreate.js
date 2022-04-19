@@ -45,8 +45,6 @@ module.exports = new ClientEvent("messageCreate", async (message) => {
     const xpTimestamps = xpCooldowns.get("xpBlock");
     const xpCooldown = 45000;
 
-    console.log(xpTimestamps);
-
     if (xpTimestamps.has(message.author.id)) {
         const expires = xpTimestamps.get(message.author.id) + xpCooldown;
 
