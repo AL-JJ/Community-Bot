@@ -79,7 +79,7 @@ module.exports = new ClientEvent("messageCreate", async (message) => {
 
 
     // Adds 1 to the N-word counter
-    if (message.content.includes('nigga')){
+    if (message.content.toLowerCase().includes('nigga')){
         const count = (message.content.toLowerCase().match(/nigga/g) || []).length;
         await profileModel.findOneAndUpdate({ userID: message.author.id },
             {
@@ -87,7 +87,7 @@ module.exports = new ClientEvent("messageCreate", async (message) => {
                     softRs: count,
                 }
         });
-    } else if (message.content.includes('nigger')){
+    } else if (message.content.toLowerCase().includes('nigger')){
         const count = (message.content.toLowerCase().match(/nigger/g) || []).length;
         await profileModel.findOneAndUpdate({ userID: message.author.id },
             {
