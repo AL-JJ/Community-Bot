@@ -20,14 +20,13 @@ module.exports = new Command(
         const embed = {
             color: 0x2F3136,
             fields: [
-                { name: "Level", value: `${profile.level}` },
                 { name: "Current XP", value: `${profile.xp} (${((Math.ceil(4.5 * profile.level) + 80) + 3 * (profile.level ** 3) - profile.xp)} left for next level)` },
                 { name: "N-words", value: `${profile.softRs + profile.hardRs}, of which ${profile.hardRs} were hard-r's.`}
             ]
         }
 
-        if (args.length === 1) embed.title = `Stats for ${ message.mentions.users.first().username }`;
-        else embed.title = `Stats for ${ message.author.username }`;
+        if (args.length === 1) embed.title = `Stats for ${ message.mentions.users.first().username } (Lv. ${profile.level})`;
+        else embed.title = `Stats for ${ message.author.username } (Lv. ${profile.level})`;
 
         message.reply({ embeds: [embed] });
     }

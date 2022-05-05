@@ -95,6 +95,14 @@ module.exports = new ClientEvent("messageCreate", async (message) => {
                     hardRs: count,
                 }
         });
+    } else if (message.content.toLowerCase().includes('neger')){
+        const count = (message.content.toLowerCase().match(/neger/g) || []).length;
+        await profileModel.findOneAndUpdate({ userID: message.author.id },
+            {
+                $inc: {
+                    hardRs: count,
+                }
+        });
     }
 
     // Command Handler
